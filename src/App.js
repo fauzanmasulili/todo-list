@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { setTodoList } from "./redux/actions/actions";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import './App.css'
-import Modal from './components/Modal';
 import TodoList from "./components/TodoList";
+import { SET_TODO_LIST } from "./redux/actionTypes/actionTypes";
 
-const App = ({setTodoList}) => {
-  const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true)
-
+const App = () => {
+  const dispatch = useDispatch();
+  const todo_list = useSelector(state => state.todo_list)
 
 
   useEffect(() => {
@@ -16,39 +15,25 @@ const App = ({setTodoList}) => {
       .then(response => response.json())
       .then(result => {
         if (result) {
-          setTodoList(result)
-          setLoading(false)
+          console.log(result)
+          dispatch({
+            type: SET_TODO_LIST,
+            payload: result,
+          })
         }
       })
-  }, [])
-
-  function changeShowModal() {
-    setShowModal(false)
-  }
+  }, [dispatch])
 
   return (
     <div className="App">
       <div>
         <h1 className="text-xl font-bold">Todo List</h1>
       </div>
-      {loading ?
-        <div>loading</div> :
-        <TodoList />
-      }
-      <button onClick={() => setShowModal(true)}>Show Modal</button>
-      <Modal showModal={showModal} changeShowModal={changeShowModal} />
+      <TodoList todo_list={todo_list} />
     </div>
   );
 }
 
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setTodoList: (todo_list) => {
-      dispatch(setTodoList(todo_list))
-    }
-  }
-}
 
-
-export default connect(null, mapDispatchToProps)(App);
+export default (App);
