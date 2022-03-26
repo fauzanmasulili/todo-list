@@ -32,12 +32,12 @@ const Modal = ({ showModal, changeShowModal, list, forceUpdate }) => {
     }
 
     function handleStatusChange(event) {
-        if(event.target.checked) {
+        if (event.target.checked) {
             setStatus(1)
         } else {
             setStatus(0)
         }
-        
+
     }
 
     function handleCreateChange() {
@@ -57,7 +57,10 @@ const Modal = ({ showModal, changeShowModal, list, forceUpdate }) => {
             type: ADD_TODO_LIST,
             payload: data,
         })
-        changeShowModal() 
+        changeShowModal()
+        setTitle("")
+        setDescription("")
+        setStatus(0)
     }
 
     function handleUpdateChange() {
@@ -73,7 +76,7 @@ const Modal = ({ showModal, changeShowModal, list, forceUpdate }) => {
             payload: data,
         })
 
-        changeShowModal() 
+        changeShowModal()
     }
 
     function handleDeleteTask(list) {
@@ -82,7 +85,7 @@ const Modal = ({ showModal, changeShowModal, list, forceUpdate }) => {
             type: REMOVE_TODO_LIST,
             payload: id
         })
-        changeShowModal() 
+        changeShowModal()
     }
 
 
@@ -182,7 +185,7 @@ const Modal = ({ showModal, changeShowModal, list, forceUpdate }) => {
                                     <button
                                         type="button"
                                         className={` ${list ? '' : 'hidden'} w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm`}
-                                        onClick={()=> handleDeleteTask(list)}
+                                        onClick={() => handleDeleteTask(list)}
                                     >
                                         Delete
                                     </button>
