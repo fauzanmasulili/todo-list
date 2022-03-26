@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import './App.css'
+import TodoList from "./components/TodoList";
+import { SET_TODO_LIST } from "./redux/actionTypes/actionTypes";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  const todo_list = useSelector(state => state.todo_list)
+
+
+  useEffect(() => {
+    fetch('https://virtserver.swaggerhub.com/hanabyan/todo/1.0.0/to-do-list')
+      .then(response => response.json())
+      .then(result => {
+        if (result) {
+          console.log(result)
+          dispatch({
+            type: SET_TODO_LIST,
+            payload: result,
+          })
+        }
+      })
+  }, [dispatch])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <h1 className="text-xl font-bold">Todo List</h1>
+      </div>
+      <TodoList todo_list={todo_list} />
     </div>
   );
 }
 
-export default App;
+
+
+export default (App);
